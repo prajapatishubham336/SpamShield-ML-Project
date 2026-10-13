@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spamshield-mlops"
+version = "1.0.0"
+description = "CPU-friendly spam classification and MLOps demonstration"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+packages = [
+    "app",
+    "app.pipeline",
+    "app.mlops",
+    "app.monitoring"
+]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

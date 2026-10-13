@@ -1,0 +1,1143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamShield ML | Shubham</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080d19;
+            --panel: #101829;
+            --panel2: #131f33;
+            --border: #25334b;
+            --text: #edf3ff;
+            --muted: #91a0b9;
+            --blue: #6595ff;
+            --cyan: #44d9e8;
+            --green: #36d399;
+            --red: #fb7185;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 25px;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(ellipse at 80% 0%, #14274a 0%, transparent 38%),
+                var(--bg);
+            min-height: 100vh;
+        }
+
+        button, textarea {
+            font: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 245px minmax(0, 1fr);
+            min-height: 100vh;
+        }
+
+        aside {
+            background: rgba(10, 17, 31, .96);
+            border-right: 1px solid var(--border);
+            padding: 26px 17px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 9px 30px;
+        }
+
+        .logo {
+            width: 43px;
+            height: 43px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #6595ff, #45d9e8);
+            display: grid;
+            place-items: center;
+            color: #071222;
+            font-size: 22px;
+            font-weight: 800;
+            box-shadow: 0 5px 24px #6595ff38;
+        }
+
+        .brand h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .brand small {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .nav-label {
+            color: #6f819d;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            padding: 10px 12px;
+        }
+
+        .nav-item {
+            color: #aab8ce;
+            padding: 13px 12px;
+            border-radius: 10px;
+            margin: 3px 0;
+            font-size: 13px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: .2s;
+        }
+
+        .nav-item:hover {
+            background: #15243b;
+            color: white;
+        }
+
+        .nav-item.active {
+            background: #1b3155;
+            color: #dce8ff;
+            border-color: #34568c;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            border: 1px solid var(--border);
+            background: #101a2b;
+            border-radius: 14px;
+            padding: 15px;
+        }
+
+        .online {
+            color: var(--green);
+            font-size: 11px;
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #36d39970;
+        }
+
+        .sidebar-bottom p {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        main {
+            min-width: 0;
+            padding: 30px 36px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            color: var(--cyan);
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 9px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: clamp(24px, 3vw, 32px);
+            letter-spacing: -1px;
+        }
+
+        header p {
+            margin: 9px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            border: 1px solid var(--border);
+            padding: 9px 13px;
+            border-radius: 13px;
+            background: #101a2b;
+        }
+
+        .avatar {
+            width: 37px;
+            height: 37px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #557fff, #48d3df);
+            color: #071222;
+            font-weight: 800;
+        }
+
+        .profile strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .profile small {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .hero {
+            border: 1px solid #30466b;
+            background: linear-gradient(110deg, #152847, #101b30 70%);
+            border-radius: 20px;
+            padding: 25px 27px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .hero h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .hero p {
+            color: #aabbd5;
+            font-size: 12px;
+            line-height: 1.8;
+            max-width: 560px;
+            margin: 0;
+        }
+
+        .hero-chip {
+            flex-shrink: 0;
+            border: 1px solid #3b5c83;
+            background: #193553;
+            padding: 13px 16px;
+            border-radius: 14px;
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 22px;
+            scroll-margin-top: 25px;
+        }
+
+        .stat, .panel {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: linear-gradient(145deg, #111b2e, #0e1727);
+        }
+
+        .stat {
+            padding: 19px;
+            min-width: 0;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: center;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .stat-icon {
+            width: 33px;
+            height: 33px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: #1c3151;
+            color: var(--cyan);
+            font-size: 16px;
+        }
+
+        .stat h3 {
+            font-size: 27px;
+            margin: 17px 0 7px;
+            letter-spacing: -.8px;
+        }
+
+        .stat p {
+            font-size: 10px;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(280px, .85fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            padding: 23px;
+            margin-bottom: 20px;
+            min-width: 0;
+            scroll-margin-top: 25px;
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .panel-heading h2 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .panel-heading p {
+            margin: 6px 0 0;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .pill {
+            padding: 7px 9px;
+            border-radius: 8px;
+            background: #15352f;
+            color: var(--green);
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: #d5e0f2;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 165px;
+            resize: vertical;
+            border: 1px solid #30415c;
+            background: #0a1220;
+            border-radius: 12px;
+            padding: 15px;
+            color: var(--text);
+            outline: none;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        textarea:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px #6595ff15;
+        }
+
+        textarea::placeholder {
+            color: #64758e;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            color: var(--muted);
+            font-size: 10px;
+            margin: 9px 0 17px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .btn-primary {
+            color: #071222;
+            border: none;
+            background: linear-gradient(100deg, #6d9aff, #51d6e1);
+            box-shadow: 0 6px 22px #6595ff24;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+        }
+
+        .btn-secondary {
+            color: #c4d2e7;
+            background: #152137;
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .result {
+            margin-top: 20px;
+            border: 1px dashed #344967;
+            background: #0b1423;
+            border-radius: 13px;
+            padding: 18px;
+            min-height: 105px;
+            overflow-wrap: anywhere;
+        }
+
+        .result-title {
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 1.3px;
+            font-weight: 800;
+        }
+
+        .result-main {
+            font-size: 19px;
+            font-weight: 800;
+            margin: 12px 0 7px;
+        }
+
+        .result-desc {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .result.spam {
+            border-color: #9c4256;
+            background: #291521;
+        }
+
+        .result.spam .result-main {
+            color: var(--red);
+        }
+
+        .result.ham {
+            border-color: #27795d;
+            background: #10251f;
+        }
+
+        .result.ham .result-main {
+            color: var(--green);
+        }
+
+        .result.error {
+            border-color: #9c4256;
+        }
+
+        .feature {
+            display: flex;
+            gap: 13px;
+            padding: 13px 0;
+            border-bottom: 1px solid #202e43;
+        }
+
+        .feature:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 37px;
+            height: 37px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            background: #1a2c48;
+            font-size: 17px;
+        }
+
+        .feature strong, .step strong {
+            font-size: 12px;
+        }
+
+        .feature p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin: 5px 0 0;
+        }
+
+        .steps {
+            display: grid;
+            gap: 13px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #0d1728;
+            border: 1px solid #202e43;
+            border-radius: 11px;
+        }
+
+        .step-num {
+            width: 35px;
+            height: 35px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: #1c3151;
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .step small {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 20px 0 5px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        footer a {
+            color: var(--cyan);
+        }
+
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            aside {
+                position: relative;
+                height: auto;
+                min-height: auto;
+                padding: 16px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .brand {
+                padding-bottom: 15px;
+            }
+
+            .nav-label {
+                padding-left: 5px;
+            }
+
+            .nav-item {
+                display: inline-flex;
+                padding: 10px;
+                margin-right: 3px;
+            }
+
+            .sidebar-bottom {
+                margin-top: 15px;
+            }
+
+            main {
+                padding: 22px 16px;
+            }
+
+            header {
+                align-items: flex-start;
+            }
+
+            .profile {
+                padding: 7px;
+            }
+
+            .profile small {
+                display: none;
+            }
+
+            .hero {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat {
+                padding: 14px;
+            }
+
+            .stat h3 {
+                font-size: 23px;
+            }
+
+            .panel {
+                padding: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside>
+        <div class="brand">
+            <div class="logo">S</div>
+            <div>
+                <h2>SpamShield ML</h2>
+                <small>Intelligent Message Security</small>
+            </div>
+        </div>
+
+        <div class="nav-label">WORKSPACE</div>
+
+        <a class="nav-item active" href="#dashboard" data-section="dashboard">
+            <span class="nav-icon">▦</span> Dashboard
+        </a>
+
+        <a class="nav-item" href="#analyzer" data-section="analyzer">
+            <span class="nav-icon">⌕</span> Message Analyzer
+        </a>
+
+        <a class="nav-item" href="#insights" data-section="insights">
+            <span class="nav-icon">▥</span> Model Insights
+        </a>
+
+        <a class="nav-item" href="#pipeline" data-section="pipeline">
+            <span class="nav-icon">⚙</span> ML Pipeline
+        </a>
+
+        <div class="nav-label">DEVELOPER</div>
+
+        <a class="nav-item" href="/docs">
+            <span class="nav-icon">⌘</span> API Documentation
+        </a>
+
+        <div class="sidebar-bottom">
+            <div class="online">
+                <span class="dot"></span>
+                Local Workspace
+            </div>
+            <p>SpamShield ML is ready to analyze messages using your trained machine learning pipeline.</p>
+        </div>
+    </aside>
+
+    <main id="dashboard">
+
+        <header>
+            <div>
+                <div class="eyebrow">MACHINE LEARNING PLATFORM</div>
+                <h1>SpamShield Dashboard</h1>
+                <p>Analyze messages and inspect your spam classification workflow.</p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">S</div>
+                <div>
+                    <strong>Shubham</strong>
+                    <small>ML Engineer</small>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div>
+                <h2>Welcome to SpamShield ML 🛡️</h2>
+                <p>
+                    Detect unwanted messages using a machine learning pipeline.
+                    Enter a message, run a prediction, and review the result.
+                    The dashboard sends requests to your FastAPI backend.
+                </p>
+            </div>
+            <div class="hero-chip">✦ ML Prediction System</div>
+        </section>
+
+        <section class="stats" id="insights">
+            <div class="stat">
+                <div class="stat-top">
+                    <span>Task</span>
+                    <span class="stat-icon">🛡️</span>
+                </div>
+                <h3>NLP</h3>
+                <p>Text classification</p>
+            </div>
+
+            <div class="stat">
+                <div class="stat-top">
+                    <span>Feature Extraction</span>
+                    <span class="stat-icon">🧠</span>
+                </div>
+                <h3>TF-IDF</h3>
+                <p>Text to numerical features</p>
+            </div>
+
+            <div class="stat">
+                <div class="stat-top">
+                    <span>Prediction Classes</span>
+                    <span class="stat-icon">◈</span>
+                </div>
+                <h3>2</h3>
+                <p>Spam and Ham</p>
+            </div>
+
+            <div class="stat">
+                <div class="stat-top">
+                    <span>Inference API</span>
+                    <span class="stat-icon">↗</span>
+                </div>
+                <h3>REST</h3>
+                <p>FastAPI endpoint</p>
+            </div>
+        </section>
+
+        <section class="content-grid">
+
+            <div class="panel" id="analyzer">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Message Analyzer</h2>
+                        <p>Enter a message to check its classification.</p>
+                    </div>
+                    <span class="pill">● Ready to scan</span>
+                </div>
+
+                <form id="scanForm">
+                    <label for="message">Message content</label>
+
+                    <textarea
+                        id="message"
+                        maxlength="10000"
+                        placeholder="Example: Congratulations! You have won a free prize. Click here to claim..."
+                        required
+                    ></textarea>
+
+                    <div class="form-footer">
+                        <span>Keep your message under 10,000 characters.</span>
+                        <span id="charCount">0 / 10000</span>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-primary" id="scanButton" type="submit">
+                            ✦ Analyze Message
+                        </button>
+
+                        <button class="btn btn-secondary" type="button" id="clearButton">
+                            Clear
+                        </button>
+                    </div>
+                </form>
+
+                <div class="result" id="result" aria-live="polite">
+                    <div class="result-title">ANALYSIS RESULT</div>
+                    <div class="result-main">Ready for analysis</div>
+                    <div class="result-desc">
+                        Your prediction will appear here after you analyze a message.
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Platform Features</h2>
+                            <p>Built for a practical ML workflow.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">🛡️</div>
+                        <div>
+                            <strong>Spam Classification</strong>
+                            <p>Classifies a message as spam or ham using the trained model.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">🧠</div>
+                        <div>
+                            <strong>NLP Processing</strong>
+                            <p>Transforms raw text into features for machine learning.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">📈</div>
+                        <div>
+                            <strong>Model Evaluation</strong>
+                            <p>Training metrics help evaluate model performance.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">⚙️</div>
+                        <div>
+                            <strong>MLOps Ready</strong>
+                            <p>Designed for API-based inference and experiment tracking.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>How It Works</h2>
+                            <p>From text to prediction.</p>
+                        </div>
+                    </div>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">01</div>
+                            <div>
+                                <strong>Enter message</strong>
+                                <small>Paste text to analyze.</small>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-num">02</div>
+                            <div>
+                                <strong>Run ML pipeline</strong>
+                                <small>Extract text features.</small>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-num">03</div>
+                            <div>
+                                <strong>Review prediction</strong>
+                                <small>Check spam or legitimate message.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="panel" id="pipeline">
+            <div class="panel-heading">
+                <div>
+                    <h2>ML Pipeline</h2>
+                    <p>How SpamShield processes a message.</p>
+                </div>
+                <span class="pill">Pipeline Overview</span>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <div>
+                        <strong>Input Message</strong>
+                        <small>Receive text from the user.</small>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <div>
+                        <strong>TF-IDF Feature Extraction</strong>
+                        <small>Convert text into numerical features.</small>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <div>
+                        <strong>Trained ML Model</strong>
+                        <small>Classify the message using the saved pipeline.</small>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">04</div>
+                    <div>
+                        <strong>Prediction Result</strong>
+                        <small>Display the prediction returned by the API.</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <span>© 2026 <strong>SpamShield ML</strong> · Machine Learning Project</span>
+            <span>Designed &amp; Developed by <strong>Shubham</strong></span>
+            <span><a href="/docs">API Docs ↗</a></span>
+        </footer>
+
+    </main>
+</div>
+
+<script>
+    const form = document.getElementById("scanForm");
+    const message = document.getElementById("message");
+    const result = document.getElementById("result");
+    const scanButton = document.getElementById("scanButton");
+    const charCount = document.getElementById("charCount");
+    const clearButton = document.getElementById("clearButton");
+
+    // Update message character count
+    message.addEventListener("input", () => {
+        charCount.textContent = `${message.value.length} / 10000`;
+    });
+
+    // Display the prediction result safely
+    function showResult(title, description, type = "") {
+        result.className = "result " + type;
+        result.replaceChildren();
+
+        const heading = document.createElement("div");
+        heading.className = "result-title";
+        heading.textContent = "ANALYSIS RESULT";
+
+        const main = document.createElement("div");
+        main.className = "result-main";
+        main.textContent = title;
+
+        const desc = document.createElement("div");
+        desc.className = "result-desc";
+        desc.textContent = description;
+
+        result.append(heading, main, desc);
+    }
+
+    // Clear the message and result
+    clearButton.addEventListener("click", () => {
+        message.value = "";
+        charCount.textContent = "0 / 10000";
+
+        showResult(
+            "Ready for analysis",
+            "Your prediction will appear here after you analyze a message."
+        );
+
+        message.focus();
+    });
+
+    // Send message to FastAPI
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const text = message.value.trim();
+
+        if (!text) {
+            showResult(
+                "Message required",
+                "Please enter a message before starting analysis.",
+                "error"
+            );
+            return;
+        }
+
+        scanButton.disabled = true;
+        scanButton.textContent = "Analyzing...";
+
+        showResult(
+            "Analyzing message...",
+            "Sending text to the SpamShield prediction API."
+        );
+
+        try {
+            const response = await fetch("/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ text: text })
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                const detail = typeof data.detail === "string"
+                    ? data.detail
+                    : `API returned HTTP ${response.status}. Check /docs for the expected request format.`;
+
+                showResult("Prediction unavailable", detail, "error");
+                return;
+            }
+
+            const label = String(
+                data.label ??
+                data.prediction ??
+                data.result ??
+                data.class ??
+                "Prediction received"
+            );
+
+            const normalizedLabel = label.toLowerCase();
+
+            const isSpam =
+                normalizedLabel.includes("spam") &&
+                !normalizedLabel.includes("not spam");
+
+            const isHam = [
+                "ham",
+                "not spam",
+                "legitimate",
+                "safe"
+            ].some(value => normalizedLabel.includes(value));
+
+            let description = "The model returned a prediction.";
+
+            const confidence =
+                data.confidence ??
+                data.probability ??
+                data.score;
+
+            if (confidence !== undefined && confidence !== null) {
+                const number = Number(confidence);
+
+                const formattedConfidence = Number.isFinite(number)
+                    ? (
+                        number <= 1
+                            ? (number * 100).toFixed(1) + "%"
+                            : number.toFixed(1)
+                    )
+                    : String(confidence);
+
+                description += ` Confidence/score: ${formattedConfidence}.`;
+            }
+
+            if (isSpam) {
+                showResult(
+                    "⚠ Spam detected",
+                    description,
+                    "spam"
+                );
+            } else if (isHam) {
+                showResult(
+                    "✓ Likely legitimate (Ham)",
+                    description,
+                    "ham"
+                );
+            } else {
+                showResult(label, description);
+            }
+
+        } catch (error) {
+            showResult(
+                "Connection failed",
+                "Could not connect to the prediction API. Confirm that the FastAPI server is running.",
+                "error"
+            );
+        } finally {
+            scanButton.disabled = false;
+            scanButton.textContent = "✦ Analyze Message";
+        }
+    });
+
+    // Sidebar navigation
+    const navLinks = document.querySelectorAll(
+        ".nav-item[data-section]"
+    );
+
+    navLinks.forEach(link => {
+        link.addEventListener("click", event => {
+            event.preventDefault();
+
+            const target = document.getElementById(
+                link.dataset.section
+            );
+
+            if (!target) {
+                return;
+            }
+
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+            navLinks.forEach(item => {
+                item.classList.remove("active");
+            });
+
+            link.classList.add("active");
+        });
+    });
+</script>
+
+</body>
+</html>
