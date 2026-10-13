@@ -1,6 +1,6 @@
 # 🛡️ SpamShield ML — End-to-End Spam Detection & MLOps Platform
 
-**An end-to-end Machine Learning project that classifies messages as spam or ham (legitimate messages), with a FastAPI backend, automated model selection, MLflow experiment tracking, and a web interface.**
+An end-to-end Machine Learning project that classifies text messages as **spam** or **ham (legitimate)** using NLP and machine learning. The application includes a FastAPI backend, a web dashboard, MLflow experiment tracking, automated tests, Docker support, and a live deployment on Render.
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python" alt="Python 3.11" />
@@ -9,7 +9,19 @@
   <img src="https://img.shields.io/badge/MLflow-Experiment%20Tracking-blue?logo=mlflow" alt="MLflow" />
   <img src="https://img.shields.io/badge/Pytest-Testing-0A9EDC?logo=pytest" alt="Pytest" />
   <img src="https://img.shields.io/badge/Docker-Containerization-2496ED?logo=docker" alt="Docker" />
+  <img src="https://img.shields.io/badge/Deployment-Render-46E3B7?logo=render" alt="Render" />
 </p>
+
+## 🚀 Live Demo
+
+- **Live Application:** https://spamshield-ml-project.onrender.com
+- **Swagger API Documentation:** https://spamshield-ml-project.onrender.com/docs
+- **ReDoc Documentation:** https://spamshield-ml-project.onrender.com/redoc
+- **Health Check:** https://spamshield-ml-project.onrender.com/api/health
+- **GitHub Repository:** https://github.com/prajapatishubham336/SpamShield-ML-Project
+
+> **Note:** The application is hosted on Render's free instance. It may spin down after inactivity, so the first request after a period of inactivity can take longer.
+<img width="1350" height="642" alt="image" src="https://github.com/user-attachments/assets/9892b5e2-ca0e-4b84-9fb8-62db85067358" />
 
 ---
 
@@ -26,448 +38,350 @@
 - [MLflow Experiment Tracking](#-mlflow-experiment-tracking)
 - [Running the Application](#-running-the-application)
 - [API Documentation](#-api-documentation)
+- [Docker](#-docker)
 - [Testing](#-testing)
 - [Model Evaluation](#-model-evaluation)
-- [Configuration](#-configuration)
+- [CI/CD](#-cicd)
 - [Limitations and Future Improvements](#-limitations-and-future-improvements)
-- [Learning Outcomes](#-learning-outcomes)
+- [Author](#-author)
 - [License](#-license)
 
 ## 📖 Overview
 
-SpamShield ML is a machine learning application designed to identify spam messages and distinguish them from legitimate messages.
+SpamShield ML is a machine learning application that identifies spam messages and distinguishes them from legitimate messages.
 
-The project combines a traditional NLP-based classification pipeline with a FastAPI application and MLflow experiment tracking. It demonstrates how a machine learning model can be trained, evaluated, saved, loaded into an API, and used to make predictions through a web interface.
+The project combines text preprocessing, TF-IDF feature extraction, machine learning classifiers, and a FastAPI application. A trained pipeline is saved and loaded by the application to make predictions through REST API endpoints and a web interface.
 
-The application uses text preprocessing, TF-IDF feature extraction, and multiple machine learning algorithms to build a spam detection pipeline.
-
-Rather than focusing only on model training, SpamShield demonstrates important parts of a practical ML engineering workflow, including API development, automated testing, model persistence, logging, and experiment tracking.
+Beyond model training, this project demonstrates practical ML engineering concepts such as experiment tracking, model persistence, automated testing, logging, containerization, and cloud deployment.
 
 ## ✨ Key Features
 
-- **Text Classification:** Predicts whether a message is `spam` or `ham`.
-- **Text Preprocessing:** Cleans and prepares the dataset before training.
-- **TF-IDF Feature Extraction:** Converts text messages into numerical features.
-- **Multiple ML Models:** Evaluates Logistic Regression, Multinomial Naive Bayes, and Complement Naive Bayes.
-- **Automated Model Selection:** Selects a candidate model using the evaluation metrics defined in the training pipeline.
-- **Model Persistence:** Saves the trained pipeline for reuse during inference.
-- **FastAPI Backend:** Exposes prediction and model information through API endpoints.
-- **Web Interface:** Provides a simple dashboard for interacting with the application.
-- **MLflow Tracking:** Records model training runs, parameters, and evaluation metrics.
-- **Prediction Logging:** Stores prediction-related information for monitoring.
-- **Automated Testing:** Uses pytest to test API behavior, preprocessing, and training.
-- **Docker Support:** Includes a Dockerfile for containerization.
+- **Spam Classification:** Classifies messages as `spam` or `ham`.
+- **NLP Preprocessing:** Cleans and validates text data before training.
+- **TF-IDF:** Converts text into numerical features for machine learning.
+- **Multiple Models:** Evaluates Logistic Regression, Multinomial Naive Bayes, and Complement Naive Bayes.
+- **Model Selection:** Selects a candidate according to the metrics configured in the training pipeline.
+- **Model Persistence:** Saves the trained pipeline using Joblib.
+- **FastAPI Backend:** Provides prediction, health, and model-information endpoints.
+- **Web Dashboard:** Offers a browser-based interface for interacting with the model.
+- **MLflow:** Tracks experiments, parameters, and evaluation metrics.
+- **Automated Tests:** Uses pytest to test important application and ML functionality.
+- **Docker:** Packages the application and its dependencies into a container.
+- **Cloud Deployment:** Runs the application on Render.
+- **GitHub Actions:** Provides CI checks for tests and Docker image builds.
 
 ## 🧰 Tech Stack
 
 | Technology | Purpose |
 |---|---|
 | Python 3.11 | Main programming language |
-| pandas | Data handling and preprocessing |
-| NumPy | Numerical operations |
+| pandas and NumPy | Data handling and numerical operations |
 | scikit-learn | Feature extraction and ML models |
 | TF-IDF | Text feature representation |
-| FastAPI | Backend API |
-| Uvicorn | ASGI application server |
+| FastAPI | REST API and application backend |
+| Uvicorn | ASGI server |
 | MLflow | Experiment tracking |
-| Joblib | Model serialization and loading |
+| Joblib | Model serialization |
 | pytest | Automated testing |
 | HTML | Web dashboard |
-| Docker | Application containerization |
+| Docker | Containerization |
 | Git and GitHub | Version control and source hosting |
+| GitHub Actions | CI automation |
+| Render | Cloud hosting |
 
 ## 🏗️ System Architecture
 
 ```text
-                 ┌─────────────────────┐
-                 │   Raw Spam Dataset  │
-                 │      spam.csv       │
-                 └──────────┬──────────┘
-                            │
-                            ▼
-                 ┌─────────────────────┐
-                 │  Data Preprocessing │
-                 │ Clean, Validate,    │
-                 │ Remove Duplicates   │
-                 └──────────┬──────────┘
-                            │
-                            ▼
-                 ┌─────────────────────┐
-                 │ Train / Test Split  │
-                 └──────────┬──────────┘
-                            │
-                            ▼
-                 ┌─────────────────────┐
-                 │  TF-IDF Features    │
-                 │  Unigrams + Bigrams │
-                 └──────────┬──────────┘
-                            │
-                            ▼
-                 ┌─────────────────────┐
-                 │ Candidate Models    │
-                 │ Logistic Regression │
-                 │ Multinomial NB      │
-                 │ Complement NB       │
-                 └──────────┬──────────┘
-                            │
-                            ▼
-                 ┌─────────────────────┐
-                 │ Evaluate & Select   │
-                 │ Best Candidate      │
-                 └──────────┬──────────┘
-                            │
-                 ┌──────────┴──────────┐
-                 ▼                     ▼
-        ┌─────────────────┐  ┌──────────────────┐
-        │ Save ML Pipeline│  │ MLflow Tracking  │
-        │ Joblib Artifact │  │ Parameters/Metrics│
-        └────────┬────────┘  └──────────────────┘
-                 │
-                 ▼
-        ┌─────────────────────┐
-        │     FastAPI App     │
-        │  Load Saved Model   │
-        └──────────┬──────────┘
-                   │
-           ┌───────┴────────┐
-           ▼                ▼
-  ┌────────────────┐  ┌────────────────┐
-  │ Web Dashboard  │  │ REST API       │
-  │ User Interface │  │ Predictions    │
-  └────────────────┘  └────────────────┘
+             Raw Spam Dataset
+                     |
+                     v
+           Data Preprocessing
+                     |
+                     v
+             Train/Test Split
+                     |
+                     v
+              TF-IDF Features
+                     |
+                     v
+            Candidate ML Models
+         /           |           \
+        v            v            v
+   Logistic       Multinomial   Complement
+  Regression     Naive Bayes   Naive Bayes
+         \           |           /
+                     v
+             Model Evaluation
+                     |
+                     v
+               Model Selection
+                     |
+             +-------+-------+
+             |               |
+             v               v
+        Save Pipeline    MLflow Tracking
+             |
+             v
+          FastAPI
+          /      \
+         v        v
+    Dashboard   REST API
+                     |
+                     v
+              Spam Prediction
+
+GitHub Push --> GitHub Actions --> Tests --> Docker Build
+                                            |
+                                            v
+                                  Deployment workflow
+                                  (CI-gated deployment
+                                   being configured)
+                                            |
+                                            v
+                                          Render
 ```
 
 ## 📂 Project Structure
 
-The following structure reflects the main directories and files in the project.
-
 ```text
 SpamShield-ML-Project/
-│
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
-│
 ├── admin/
 │   └── app.py
-│
 ├── app/
 │   ├── main.py
 │   ├── config.py
 │   ├── logging_config.py
 │   ├── middleware.py
-│   │
 │   ├── mlops/
 │   │   └── mlflow_utils.py
-│   │
 │   ├── monitoring/
 │   │   ├── metrics.py
 │   │   └── predictions.py
-│   │
 │   ├── pipeline/
 │   │   ├── features.py
 │   │   ├── models.py
 │   │   ├── preprocessing.py
 │   │   └── training.py
-│   │
 │   └── templates/
 │       └── index.html
-│
 ├── artifacts/
-│   ├── .gitkeep
 │   └── spam_pipeline.joblib
-│
 ├── data/
 │   ├── raw/
 │   │   └── spam.csv
 │   ├── processed/
 │   └── logs/
-│
 ├── models/
-│   └── spam_pipeline.joblib
-│
 ├── reports/
-│   └── metrics.json
-│
 ├── scripts/
-│   └── make_sample_data.py
-│
 ├── tests/
 │   ├── test_api.py
 │   ├── test_preprocessing.py
 │   └── test_training.py
-│
 ├── .env.example
 ├── .gitignore
-├── .pre-commit-config.yaml
+├── .dockerignore
 ├── Dockerfile
 ├── pyproject.toml
 ├── requirements.txt
-├── runtime.txt
 └── README.md
 ```
 
-**Note:** Local-only files such as `.env`, `mlflow.db`, logs, caches, and generated artifacts may be excluded from Git using `.gitignore`. The exact files tracked in the repository depend on your Git configuration.
+*This is a representative project structure. Some directories may contain additional files or be empty in a fresh checkout. The deployed application uses the model artifact configured for the application.*
 
 ## ⚙️ How It Works
 
 ### 1. Data Preprocessing
 
-The preprocessing module prepares the input dataset for machine learning.
+The preprocessing pipeline prepares the dataset for training. Depending on the implementation, it validates the required columns, normalizes labels, removes missing or blank messages, filters invalid labels, and handles duplicate records.
 
-It handles tasks such as:
+### 2. TF-IDF Feature Extraction
 
-- Checking the required text and label columns.
-- Normalizing labels into `spam` and `ham`.
-- Removing missing or blank messages.
-- Filtering invalid labels.
-- Removing duplicate text-label pairs.
+TF-IDF converts text messages into numerical vectors so that machine learning algorithms can process them.
 
-### 2. Feature Extraction with TF-IDF
+The documented feature configuration includes:
 
-Machine learning algorithms require numerical input. SpamShield uses `TfidfVectorizer` to convert text messages into numerical feature vectors.
+- Lowercase normalization
+- Unicode accent stripping
+- Unigrams and bigrams
+- Maximum vocabulary size of 20,000 features
+- Sublinear term frequency scaling
 
-The current feature configuration includes:
-
-- Lowercase text normalization.
-- Unicode accent stripping.
-- Unigrams and bigrams using `ngram_range=(1, 2)`.
-- A maximum vocabulary size of 20,000 features.
-- Sublinear term frequency scaling.
-
-For example:
-
-```text
-Input:
-"URGENT! Claim your cash reward now!"
-
-          │
-          ▼
-     TF-IDF Vectorizer
-
-          │
-          ▼
- Numerical Feature Vector
-
-          │
-          ▼
-      ML Classifier
-
-          │
-          ▼
-     Spam Prediction
-```
-
-### 3. Candidate Model Training
+### 3. Model Training
 
 The training pipeline evaluates three candidate algorithms:
 
-**Logistic Regression**
+- **Logistic Regression:** A linear classification model.
+- **Multinomial Naive Bayes:** A probabilistic classifier commonly used for text classification.
+- **Complement Naive Bayes:** A Naive Bayes variant that can be useful for imbalanced text datasets.
 
-A linear classification algorithm that estimates the probability of a message belonging to a class.
+### 4. Model Evaluation and Selection
 
-**Multinomial Naive Bayes**
+The training pipeline evaluates candidate models using configured metrics, which include accuracy, spam precision, spam F1-score, and macro F1-score.
 
-A probabilistic classifier commonly used for text classification and word-frequency-based features.
+The selected pipeline is serialized and saved for inference. MLflow records experiment information according to the project's configuration.
 
-**Complement Naive Bayes**
+### 5. Prediction
 
-A Naive Bayes variant designed to improve classification behavior on imbalanced datasets.
+The FastAPI application loads the saved pipeline and uses it to classify incoming text. Prediction responses can include a label, spam indicator, confidence, and spam probability.
 
-### 4. Model Selection
-
-The training pipeline evaluates candidate models using metrics such as:
-
-- Macro F1-score
-- Spam F1-score
-- Spam precision
-- Accuracy
-
-The selection logic compares these metrics in the order configured in the training code. The selected pipeline is then saved for later use.
-
-If two models have identical scores, the implementation's tie-breaking behavior determines which model is selected.
-
-### 5. Model Inference
-
-When a user submits a message, the FastAPI application passes the text through the saved pipeline and returns the prediction and associated probability information when supported by the model.
+Confidence and probability values are model outputs, not guarantees that a prediction is correct.
 
 ## 🚀 Installation and Setup
 
 ### Prerequisites
 
-Install the following before starting:
-
 - Python 3.11
 - Git
-- Anaconda or Miniconda (optional, for environment management)
+- Anaconda or Miniconda (optional)
+- Docker Desktop (optional, for containerized execution)
 
-### Step 1: Clone the Repository
+### 1. Clone the Repository
 
-
-```bash
-
+```powershell
 git clone https://github.com/prajapatishubham336/SpamShield-ML-Project.git
 cd SpamShield-ML-Project
 ```
 
-### Step 2: Create a Conda Environment
+### 2. Create a Python Environment
 
-```bash
+Using Conda:
+
+```powershell
 conda create -n llmapp python=3.11 -y
 conda activate llmapp
 ```
 
-Alternatively, create a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Activate it on Windows PowerShell:
+Alternatively, use a virtual environment:
 
 ```powershell
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-### Step 3: Install Dependencies
+### 3. Install Dependencies
 
-```bash
+```powershell
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-If the project uses additional development dependencies defined in `pyproject.toml`, install those according to your configuration.
+### 4. Configure Environment Variables
 
-### Step 4: Configure Environment Variables
-
-Copy `.env.example` to `.env` if the application requires local environment variables.
+If the application requires environment variables, copy the example file:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Edit `.env` only with values required by your configuration.
+Configure only the variables required by the application. Never commit secrets or your actual `.env` file.
 
-**Never commit `.env` or secrets to GitHub.**
+### 5. Verify the Dataset
 
-### Step 5: Check the Dataset
-
-Ensure the dataset is available at:
+Check whether the training dataset is present at:
 
 ```text
 data/raw/spam.csv
 ```
 
-The expected data contains text messages and their labels. The preprocessing pipeline supports the column names and label formats implemented in the project.
-
-If the dataset is not included in your Git repository, add instructions explaining how to obtain or generate it.
+If the dataset is unavailable, obtain or generate it according to the dataset requirements implemented in the training pipeline.
 
 ## 🧠 Model Training
 
-Run the training module from the project root:
+Run the training module from the repository root:
 
-```bash
+```powershell
 python -m app.pipeline.training
 ```
 
-The training process performs the following tasks:
+The pipeline is intended to:
 
-1. Loads the raw dataset.
-2. Preprocesses the text and labels.
-3. Splits the data into training and testing sets.
-4. Builds and evaluates the candidate models.
-5. Logs experiment information to MLflow.
-6. Selects the best candidate according to the configured metrics.
-7. Saves the selected model pipeline.
-8. Generates a metrics report.
+1. Load the raw dataset.
+2. Preprocess text and labels.
+3. Split the data into training and testing sets.
+4. Train and evaluate candidate models.
+5. Log experiment information to MLflow.
+6. Select a model according to configured evaluation metrics.
+7. Save the trained pipeline.
+8. Generate evaluation reports where configured.
 
-The training pipeline uses a test size of `0.2` and a random state of `42` in its current configuration.
+The current documented training configuration uses a test size of `0.2` and a random state of `42`.
 
-The saved pipeline is available at:
+The application artifact is expected at:
 
 ```text
 artifacts/spam_pipeline.joblib
 ```
 
-The project also contains a model location under `models/`. Check the training configuration to determine whether both locations are actively used.
+Check the training configuration before retraining to confirm the exact output path and whether any additional model location is used.
 
 ## 📊 MLflow Experiment Tracking
 
-MLflow records the training experiments and their evaluation metrics.
+MLflow is used to record model training experiments, parameters, and evaluation metrics.
 
-### Start the MLflow UI
+To start the MLflow UI, run the following command from the project directory:
 
-The current project configuration uses a local SQLite tracking database named `mlflow.db`.
-
-Run the following command from a separate terminal in the project directory:
-
-```bash
-mlflow ui --backend-store-uri "sqlite:///C:/Users/Admin/Desktop/SpamShield-ML-Project/mlflow.db" --host 127.0.0.1 --port 5000 --workers 1
+```powershell
+mlflow ui --host 127.0.0.1 --port 5000 --workers 1
 ```
 
 Open:
 
-**http://127.0.0.1:5000**
+http://127.0.0.1:5000
 
-### What You Can Track
-
-- Experiment name: `SpamShield-ML`
-- Candidate model names
-- Model training parameters
-- Accuracy
-- Spam precision
-- Spam recall
-- Spam F1-score
-- Macro F1-score
-- Run status and duration
-
-The current training configuration logs experiment runs for the candidate models.
-
-MLflow tracks the results; the model selection decision is performed by the project's training code.
-
-**Important:** The SQLite database is a local development resource. If you want to publish the experiment history, consider exporting the metrics or configuring a shared MLflow tracking server.
+If your configuration uses a local SQLite tracking database, ensure the MLflow command points to the correct database URI. A local tracking database is a development resource and is not automatically shared with the deployed Render service.
 
 ## 🌐 Running the Application
 
 Start the FastAPI server from the project root:
 
-```bash
+```powershell
 uvicorn app.main:app --reload
 ```
 
-The application should be accessible at:
+Open the following local URLs:
 
 | Resource | URL |
 |---|---|
 | Web Dashboard | http://127.0.0.1:8000/ |
 | Swagger API Documentation | http://127.0.0.1:8000/docs |
-| ReDoc API Documentation | http://127.0.0.1:8000/redoc |
-| Health Endpoint | http://127.0.0.1:8000/api/health |
+| ReDoc Documentation | http://127.0.0.1:8000/redoc |
+| Health Check | http://127.0.0.1:8000/api/health |
 | MLflow UI | http://127.0.0.1:5000 |
 
-The MLflow UI requires its own process to be running.
+The MLflow UI runs as a separate process.
 
 ## 🔌 API Documentation
 
-SpamShield exposes REST endpoints through FastAPI.
+Interactive documentation is available at:
+
+**Live Swagger:** https://spamshield-ml-project.onrender.com/docs
 
 ### Main Endpoints
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| GET | `/` | Serves the web dashboard |
+| GET | `/` | Web dashboard |
 | GET | `/api/health` | Health check |
-| GET | `/health` | Health check |
-| POST | `/predict` | Predict a single message |
-| POST | `/api/predict` | Prediction endpoint |
-| POST | `/predict/batch` | Batch message prediction |
+| GET | `/health` | Health check, if enabled |
+| POST | `/predict` | Single-message prediction |
+| POST | `/api/predict` | Single-message prediction |
+| POST | `/predict/batch` | Batch predictions |
 | GET | `/api/model-info` | Model information |
 
-For the exact request schemas and response fields, open the Swagger documentation at `http://127.0.0.1:8000/docs`.
+Refer to the live Swagger documentation for the exact request schemas and response fields.
 
-### Example: Single Message Prediction
+### Example: Single Prediction
 
-The following is an illustrative request. Adjust the JSON field names to match the request schema defined in `app/main.py`.
+**Request**
+
+```http
+POST /predict
+Content-Type: application/json
+```
 
 ```json
 {
@@ -475,12 +389,21 @@ The following is an illustrative request. Adjust the JSON field names to match t
 }
 ```
 
-Possible classification labels:
+Example using PowerShell against the deployed service:
 
-- `spam` — the message is classified as spam.
-- `ham` — the message is classified as legitimate.
+```powershell
+$body = @{
+    text = "Congratulations! You have won a free prize. Claim now!"
+} | ConvertTo-Json
 
-The prediction response may include fields such as:
+Invoke-RestMethod `
+    -Uri "https://spamshield-ml-project.onrender.com/predict" `
+    -Method Post `
+    -ContentType "application/json" `
+    -Body $body
+```
+
+A successful response may contain fields such as:
 
 ```json
 {
@@ -493,45 +416,67 @@ The prediction response may include fields such as:
 }
 ```
 
-**Note:** The response above is an illustrative example, not a guaranteed live prediction or fixed confidence score. Actual output depends on the saved model, input message, and configured threshold.
+This is an illustrative example only. Actual predictions and confidence values depend on the deployed model and input message.
 
-### Test Through Swagger
+### Health Check
 
-1. Start the FastAPI server.
-2. Open `http://127.0.0.1:8000/docs`.
-3. Expand the `/predict` endpoint.
-4. Click **Try it out**.
-5. Enter a message using the schema shown by Swagger.
-6. Click **Execute**.
-7. Review the prediction and HTTP response.
+```powershell
+Invoke-RestMethod `
+    -Uri "https://spamshield-ml-project.onrender.com/api/health"
+```
+
+A healthy response should indicate that the application is running and the model is loaded.
+
+### Batch Prediction
+
+```json
+{
+  "texts": [
+    "Congratulations! Claim your reward now!",
+    "Hi, are we still meeting today?"
+  ]
+}
+```
+
+Send this JSON to `POST /predict/batch`. Refer to Swagger for the exact response structure.
+
+## 🐳 Docker
+
+Build the Docker image:
+
+```powershell
+docker build -t spamshield-ml .
+```
+
+Run the container locally:
+
+```powershell
+docker run --rm -p 8000:8000 spamshield-ml
+```
+
+Open:
+
+http://localhost:8000/docs
+
+The Docker image packages the application and its dependencies. The container startup command supports the `PORT` environment variable used by Render.
 
 ## 🧪 Testing
 
-Run the automated test suite:
+Run the automated tests:
 
-```bash
-python -m pytest -q
+```powershell
+python -m pytest -v
 ```
 
-The current project test suite has previously reported:
+The test suite covers areas including API behavior, preprocessing, and training functionality.
 
-```text
-9 passed, 4 warnings
-```
+A previous local run reported **9 passed, 4 warnings**. This is a historical result, not a guarantee that every future run will produce the same result.
 
-This result represents the test run at that point in development; results may differ after code or dependency changes.
-
-The tests cover areas including:
-
-- API behavior
-- Data preprocessing
-- Model training and artifact creation
-
-Warnings related to dependency deprecations or dtype conversion do not necessarily mean a test failed. Review them when upgrading dependencies or maintaining the project.
+Review warnings when upgrading dependencies or modifying the application.
 
 ## 📈 Model Evaluation
 
-The MLflow runs currently show the following reported metrics:
+Previously recorded evaluation metrics:
 
 | Metric | Observed Value |
 |---|---:|
@@ -541,83 +486,91 @@ The MLflow runs currently show the following reported metrics:
 | Spam F1-score | 0.800 |
 | Macro F1-score | 0.733 |
 
-These values describe the recorded evaluation runs and should not be interpreted as reliable estimates of real-world performance.
+These values describe the recorded evaluation run and should not be treated as verified production performance.
 
-The current sample dataset contains many duplicate messages and only a small number of unique examples. As a result, the evaluation may not generalize to unseen messages.
+The sample dataset contains duplicate messages and a limited number of unique examples. This can make evaluation results overly optimistic if similar messages appear in both training and testing data.
 
-Before deploying this model for real-world use, evaluate it using a larger, more diverse dataset and ensure that duplicate or near-duplicate messages do not leak between training and testing data.
+For a more reliable evaluation, use a larger and more diverse dataset, investigate duplicate and near-duplicate leakage, and report per-class metrics and a confusion matrix.
+
+## 🔄 CI/CD
+
+The project includes a GitHub Actions workflow at `.github/workflows/ci.yml`.
+
+The CI workflow is designed to:
+
+1. Run when changes are pushed to `main` or a pull request targets `main`.
+2. Set up Python 3.11.
+3. Install dependencies.
+4. Run the pytest test suite.
+5. Build the Docker image.
+
+**Deployment automation status:** The application is already deployed on Render. Automatic deployment gated on successful GitHub Actions checks is a separate configuration step and should be marked complete only after a successful end-to-end workflow run.
+
+Repository: https://github.com/prajapatishubham336/SpamShield-ML-Project
 
 ## ⚙️ Configuration
 
-Application settings are managed through the project's configuration modules and environment variables.
-
-Relevant configuration includes:
+Important configuration areas include:
 
 - Model artifact path
 - Spam classification threshold
+- Dataset paths
 - MLflow tracking URI
 - MLflow experiment name
-- Logging settings
-- Dataset paths
+- Logging configuration
 
-Example MLflow configuration values used by the project:
+For implementation details, refer to:
 
-```text
-MLFLOW_EXPERIMENT_NAME=SpamShield-ML
-```
+- `app/config.py`
+- `app/mlops/mlflow_utils.py`
+- `app/pipeline/training.py`
 
-The tracking URI can use a local SQLite database during development. Refer to `app/config.py`, `app/mlops/mlflow_utils.py`, and the training module for the actual configuration behavior.
+The exact configuration depends on the current code and environment variables.
 
 ## 🔮 Limitations and Future Improvements
 
 ### Current Limitations
 
 - The sample dataset is small and contains duplicate messages.
-- The recorded test metrics are not sufficient to establish production-level accuracy.
-- The model may misclassify legitimate messages as spam or miss spam messages.
-- MLflow artifacts may need additional logging configuration.
-- A local SQLite tracking database is not a shared production tracking service.
-- The application has not been demonstrated here to be deployed publicly.
+- Existing evaluation metrics are insufficient to establish real-world performance.
+- The model can produce false positives and false negatives.
+- Local MLflow tracking is not automatically a shared production tracking service.
+- The free Render instance can spin down after inactivity.
 
 ### Planned Improvements
 
-- [ ] Collect a larger and more diverse labeled spam dataset.
-- [ ] Improve data validation and prevent train/test data leakage.
+- [ ] Use a larger and more diverse spam dataset.
+- [ ] Improve data validation and prevent train/test leakage.
 - [ ] Add confusion matrix and per-class evaluation reports.
-- [ ] Log the trained model and metrics report as MLflow artifacts.
 - [ ] Improve structured logging and prediction monitoring.
-- [ ] Add CI checks for linting and automated tests.
-- [ ] Build and verify the Docker image.
-- [ ] Deploy the FastAPI application to a hosting platform.
-- [ ] Add model versioning and a reproducible model promotion workflow.
-- [ ] Improve the web interface and display prediction results clearly.
+- [ ] Add linting and additional automated quality checks.
+- [ ] Verify GitHub Actions CI on every relevant change.
+- [ ] Gate Render deployment on successful CI checks.
+- [ ] Improve model versioning and reproducibility.
+- [ ] Enhance the web dashboard and prediction experience.
 
 ## 🎯 Learning Outcomes
 
-By building this project, you can practice:
+This project demonstrates practical experience with:
 
-- Developing a complete machine learning pipeline.
-- Cleaning and validating text datasets.
-- Applying TF-IDF to NLP classification.
-- Training and comparing multiple ML algorithms.
-- Selecting and serializing a trained model.
-- Building REST APIs using FastAPI.
-- Tracking ML experiments with MLflow.
-- Testing API endpoints and training workflows with pytest.
-- Organizing an ML engineering project for GitHub.
-- Preparing a machine learning application for containerization and deployment.
-
-## 📄 License
-
-No license has been specified yet. If you plan to publish this project as open source, add an appropriate `LICENSE` file and confirm that the dataset and any third-party resources permit the intended use.
-
----
+- NLP text preprocessing and TF-IDF
+- Training and comparing machine learning models
+- Model evaluation and serialization
+- Building REST APIs with FastAPI
+- Experiment tracking with MLflow
+- Automated testing using pytest
+- Containerizing applications with Docker
+- Version control with Git and GitHub
+- Deploying a machine learning application on Render
+- Developing a CI/CD workflow using GitHub Actions
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Shubham Prajapati**
 
-- GitHub: `https://github.com/prajapatishubham336`
-- LinkedIn: [Shubham Prajapati](https://www.linkedin.com/in/shubham-prajapati-103b38393/)
+- GitHub: https://github.com/prajapatishubham336
+- LinkedIn: https://www.linkedin.com/in/shubham-prajapati-103b38393/
 
----
+## 📄 License
+
+No license has been specified yet. If you intend to publish this repository as open source, add an appropriate `LICENSE` file and verify that the dataset and third-party resources permit your intended use.
