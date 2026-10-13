@@ -58,3 +58,5 @@ data/logs/*.jsonl
 # Generated training and evaluation metrics
 data/logs/training_metrics.json
 reports/metrics.json
+
+models/spam_pipeline.joblib

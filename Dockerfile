@@ -10,6 +10,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY app ./app
+COPY artifacts ./artifacts
 COPY scripts ./scripts
 COPY data ./data
 COPY admin ./admin

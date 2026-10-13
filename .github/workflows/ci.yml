@@ -2,12 +2,12 @@ name: SpamShield CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 jobs:
-  test:
+  test-and-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,11 +26,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Generate demo dataset
-        run: python scripts/make_sample_data.py
-
-      - name: Train model
-        run: python -m app.pipeline.training
-
       - name: Run tests
-        run: pytest -q
+        run: pytest -v
+
+      - name: Build Docker image
+        run: docker build -t spamshield-ml:ci .
+
