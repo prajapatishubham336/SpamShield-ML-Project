@@ -2,7 +2,7 @@ name: SpamShield CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, ci-cd-practice, ci-only-test]
   pull_request:
     branches: [main]
 
@@ -31,4 +31,5 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t spamshield-ml:ci .
+
 
